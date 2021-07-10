@@ -19,7 +19,7 @@ function statement(invoice, plays ){
       case "comedy":
         thisAmount = 30000;
         if(perf.audience > 20){
-          thisAmount += 1000 + 500 * (perf.audience - 20);
+          thisAmount += 10000 + 500 * (perf.audience - 20);
         }
         thisAmount += 300 * perf.audience;
         break;
