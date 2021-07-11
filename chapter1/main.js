@@ -1,9 +1,9 @@
-function appleSauce(invoice) {
-  let totalAmount = 0;
+function totalAmount(invoice) {
+  let result = 0;
   for(let perf of invoice.performances){
-    totalAmount += amountFor(perf);
+    result += amountFor(perf);
   }
-  return totalAmount;
+  return result;
 }
 
 function usd(aNumber){
@@ -13,11 +13,11 @@ function usd(aNumber){
 }
 
 function totalVolumeCredits(invoice){
-  let volumeCredits = 0;
+  let result = 0;
   for(let perf of invoice.performances){
-    volumeCredits += volumeCreditsFor(perf);
+    result += volumeCreditsFor(perf);
   }
-  return volumeCredits;
+  return result;
 }
 
 function volumeCreditsFor(aPerformance) {
@@ -66,11 +66,8 @@ function statement(invoice, plays){
     // 청구 내역을 출력한다.
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} 석)\n`;
   }
-  
-  let totalAmount = 0;
-  totalAmount = appleSauce(invoice);
 
-  result += `총액 ${usd(totalAmount)}\n`;
+  result += `총액 ${usd(totalAmount(invoice))}\n`;
   result += `적립 포인트: ${totalVolumeCredits(invoice)} 점`;
   return result;
 }
