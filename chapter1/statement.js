@@ -1,8 +1,19 @@
 function statement(invoice, plays) {
   const statementData = {};
   statementData.customer = invoice.customer;
-  statementData.performances = invoice.performances;
+  statementData.performances = invoice.performances.map(enrichPerformance);;
   return renderPlainText(statementData, plays);
+}
+
+function enrichPerformance(aPerformance){
+  // 가변 데이터는 금방 상하기 때문에 데이터는 최대한 불변처럼 취급한다.
+  const result = Object.assign({}, aPerformance);
+  result.play = playFor(result);
+  return result;
+}
+
+function playFor(aPerformance){
+  return plays[aPerformance.playID];
 }
 
 function renderPlainText(data, plays){
@@ -52,9 +63,6 @@ function renderPlainText(data, plays){
   }
 
 
-  function playFor(aPerformance){
-    return plays[aPerformance.playID];
-  }
 
   function amountFor(aPerformance){
     let result = 0;
