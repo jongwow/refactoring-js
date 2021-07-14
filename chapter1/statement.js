@@ -1,5 +1,11 @@
 function statement(invoice, plays) {
-  let result = `청구 내역 (고객명: ${invoice.customer})\n`;
+  const statementData = {};
+  statementData.customer = invoice.customer;
+  return renderPlainText(statementData, invoice, plays);
+}
+
+function renderPlainText(data, invoice, plays){
+  let result = `청구 내역 (고객명: ${data.customer})\n`;
 
   for (let perf of invoice.performances){
     // 청구 내역을 출력한다.
@@ -70,7 +76,6 @@ function statement(invoice, plays) {
     }
     return result;
   }
-
 }
 
 const invoices = require('./invoices.json');
