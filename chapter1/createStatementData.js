@@ -45,10 +45,7 @@ class PerformanceCalculator{
     throw new Error('서브클래스에서 처리하도록 설계되었습니다.');
   }
   get volumeCredits(){
-    let result = 0;
-    // 포인트를 적립한다.
-    result += Math.max(this.performance.audience - 30, 0);
-    return result;
+    return Math.max(this.performance.audience - 30, 0);
   }
 }
 
@@ -71,12 +68,7 @@ class ComedyCalculator extends PerformanceCalculator{
     return result;
   }
   get volumeCredits(){
-    let result = super.volumeCredits;
-    // 희극 관객 5명마다 추가 포인트를 제공한다.
-    if ("comedy" === this.play.type){
-      result += Math.floor(this.performance.audience / 5);
-    }
-    return result;
+    return super.volumeCredits + Math.floor(this.performance.audience / 5);
   }
 }
 exports.createStatementData = createStatementData;
