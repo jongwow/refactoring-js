@@ -9,8 +9,9 @@ function createStatementData(invoice, plays) {
     
     function enrichPerformance(aPerformance){
         // 가변 데이터는 금방 상하기 때문에 데이터는 최대한 불변처럼 취급한다.
+        const calculator = new PerformanceCalculator(aPerformance, playFor(aPerformance));
         const result = Object.assign({}, aPerformance);
-        result.play = playFor(result);
+        result.play = calculator.play;
         result.amount = amountFor(result);
         result.volumeCredits = volumeCreditsFor(result);
         return result;
@@ -59,6 +60,13 @@ function createStatementData(invoice, plays) {
       function totalVolumeCredits(data){
         return data.performances.reduce((total, p) => total + p.volumeCredits, 0);
       }
+}
+
+class PerformanceCalculator{
+  constructor(aPerformance, play){
+    this.performance = aPerformance;
+    this.play = play;
+  }
 }
 
 exports.createStatementData = createStatementData;
