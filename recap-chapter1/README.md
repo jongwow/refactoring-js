@@ -52,7 +52,7 @@ typescript에 대한 설명은 [공식홈페이지](https://www.typescriptlang.o
 > tsc
 ```
 tsconfig.json에 맞춰서 잘 알아서 해준다.
-
+typescript는 그 자체로는 node에서 안돌아간다. 빌드를 해줘야지만 돌아간다! 사실 이 부분은 상당히 많이 발전해온 부분 중 하나라 typescript runtime 을 찾아보면 재밌는 얘기가 많을 거다. 많은 사람들이 deno(node 개발자였던 라이언 달이 개발하는 런타임)에 대해 들어봤을거라 생각한다.
 ## ESLINT
 
 코드는 컨벤션에 맞춰서 알잘딱하게 작성해야 제맛! 클린코드는 법은 아니지만 highly recommended다! eslint는 그걸 도와주는 참한 친구다.
@@ -68,17 +68,11 @@ tsconfig.json에 맞춰서 잘 알아서 해준다.
 > npx eslint --init
 ```
 
-나는 아래와 같은 설정으로 쓰는 편이다. 조금 강제적이긴 한데 별 신경안쓴다. 너무 제한적이라 생각될 때 config를 바꾸면 된다고 생각한다.
+//TODO: 내용 수정하기. eslint 적용부분 설정이 많이 바뀌어서 다시 적어야할 듯.
+
 
 ```shell
-✔ How would you like to use ESLint? · style
-✔ What type of modules does your project use? · esm
-✔ Which framework does your project use? · none
-✔ Does your project use TypeScript? · No / Yes
-✔ Where does your code run? · browser
-✔ How would you like to define a style for your project? · guide
-✔ Which style guide do you want to follow? · airbnb
-✔ What format do you want your config file to be in? · JSON
+
 ```
 
 ### 적용법
@@ -94,3 +88,55 @@ tsconfig.json에 맞춰서 잘 알아서 해준다.
 이러면 문제점에 대해 알려준다. 이때 --fix 옵션을 주게된다면 수정가능한 문제에 대해선 자동으로 수정해주기까지 한다! (와우~). 
 그치만 매번 이렇게 eslint를 실행시키는건 너무 귀찮다. 이럴 때 vscode를 쓰면 plugin이 다 잡아서 해준다. 참 살기 좋다. 물론 vscode뿐만아니라 webstorm도 plugin 깔면 다 가능하다.
 
+
+## 테스트 만들기
+js세상에선 테스트 관련 패키지들은 많다. mocha, jest, jasmine 등등. 나는 커피를 좋아하기 때문에 mocha를 사용할 것이다. 참고로 javascript는 한때 mocha라고 불렸던 적이 있다. (불렸다고 하기엔 조상라고 해야하려나...[영상자료](https://www.youtube.com/watch?v=Sh6lK57Cuk4))
+
+### 설치
+```shell
+> npm i mocha @types/mocha -D
+```
+
+> mocha를 쓸 때 항상 같이 나오는 라이브러리가 chai이다. Mocha는 testing만 제공하고 assert는 제공하지 않는다. node 기본 제공을 사용하거나 추가적인 라이브러리를 설치해서 assertion을 해야하는데 mocha가 바로 a **BDD / TDD assertion** library 이기 때문에 같이 사용하는 경우가 많다. 여기선 BDD, TDD도 아니고 node assert로도 충분하기 때문에 chai는 설치하지 않았다.
+
+
+### 테스트 실행
+```shell
+# 빌드! 또 빌드!
+> npm run build  
+
+# 그리고 나서 빌드된 js를 mocha로 실행
+> npx mocha ./dist/main.spec.js  
+```
+
+그러면 TEST가 완료된 모습을 확인할 수 있다.
+```shell
+> npx mocha ./dist/main.spec.js   
+
+helloWorld 함수 테스트
+  ✔ 인자 없이 실행
+  ✔ 인자 있이 실행
+  ✔ 있는데 없는거랑 비교
+
+3 passing (3ms)
+```
+
+### 빌드->테스트->빌드->테스트가 귀찮다면?
+1. npm script에 두개를 합친(이미 build도 `rm -rf ./dist/* && tsc`이긴 하지만) script를 넣는다.
+2. ts-node를 이용해서 typescript로부터 바로 mocha를 수행한다.
+
+이 중 2번째 solution을 적용해보자.
+`npm install ts-node -D`를 통해 ts-node를 설치한다.
+
+> ts-node는 메모리상에서 트랜스파일링을 해서 node로 실행시켜준다.
+
+그리고 test를 실행한다.
+```shell
+npx mocha src/*.spec.ts -r ts-node/register
+```
+#### 테스트 패턴
+
+AAA(Arrange, Act, Assert) 패턴.
+GWT(Given, When, Then) 패턴.
+[차이](https://softwareengineering.stackexchange.com/questions/308160/differences-between-given-when-then-gwt-and-arrange-act-assert-aaa)
+여기선 AAA 패턴 사용할 것!
