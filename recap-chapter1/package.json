@@ -1,0 +1,17 @@
+{
+  "name": "recap-chapter1",
+  "version": "1.0.0",
+  "description": "복습을 위해서 Chapter 1을 따라서 만든다. 근데 그냥 따라하면 *what's the fun in that?* 그래서 Typescript로 포팅해서 따라 작성할 것이다.",
+  "scripts": {
+    "build":"rm -rf ./dist/* && tsc"
+  },
+  "author": "jongwow",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "eslint": "^7.30.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "typescript": "^4.3.5"
+  }
+}

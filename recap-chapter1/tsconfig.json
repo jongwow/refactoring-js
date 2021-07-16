@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es5", // ECMAScript 버전 선택
+    "module": "commonjs", // module code 생성을 어떤 방식으로 할건지: 'none', 'commonjs', 'amd', 'es2015',  등등
+    "outDir": "./dist", // *컴파일*된 js 파일이 생성될 곳
+    "strict": true,                                 
+    "esModuleInterop": true,               
+    "skipLibCheck": true,         
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "include": ["**/src/**.ts"],
+  "exclude": ["**/**.md", "**/**.json"],
+}
