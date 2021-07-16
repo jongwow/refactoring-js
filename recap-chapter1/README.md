@@ -20,13 +20,13 @@ typescript에 대한 설명은 [공식홈페이지](https://www.typescriptlang.o
 
 ### 설치
 ```shell
-npm install -g typescript
+> npm install -g typescript
 ```
 
 ### typescript *컴파일*에 대한 설정 (tsconfig 생성)
 
 ```shell
-tsc --init
+> tsc --init
 ```
 이러면 `tsconfing.json` 파일이 생성된 것을 볼 수 있다. 이 중 필요한 옵션만 키고 나머진 지워줘도 괜찮다. 이 프로젝트에선 아래와 같은 옵션을 사용할 것이다. (거의 디폴트다.)
 ```json
@@ -49,7 +49,7 @@ tsc --init
 
 ### 컴파일
 ```shell
-tsc
+> tsc
 ```
 tsconfig.json에 맞춰서 잘 알아서 해준다.
 
@@ -59,13 +59,13 @@ tsconfig.json에 맞춰서 잘 알아서 해준다.
 
 ### 설치
 ```shell
-npm install eslint --save-dev
+> npm install eslint --save-dev
 ```
 
 ### 설정
 
 ```shell
-npx eslint --init
+> npx eslint --init
 ```
 
 나는 아래와 같은 설정으로 쓰는 편이다. 조금 강제적이긴 한데 별 신경안쓴다. 너무 제한적이라 생각될 때 config를 바꾸면 된다고 생각한다.
@@ -80,3 +80,17 @@ npx eslint --init
 ✔ Which style guide do you want to follow? · airbnb
 ✔ What format do you want your config file to be in? · JSON
 ```
+
+### 적용법
+```shell
+> npx eslint src/*.ts 
+
+1:15  error  Strings must use singlequote                   quotes
+1:22  error  Missing semicolon                              semi
+4:1   error  Expected indentation of 2 spaces but found 4   indent
+5:2   error  Newline required at end of file but not found  eol-last
+```
+
+이러면 문제점에 대해 알려준다. 이때 --fix 옵션을 주게된다면 수정가능한 문제에 대해선 자동으로 수정해주기까지 한다! (와우~). 
+그치만 매번 이렇게 eslint를 실행시키는건 너무 귀찮다. 이럴 때 vscode를 쓰면 plugin이 다 잡아서 해준다. 참 살기 좋다. 물론 vscode뿐만아니라 webstorm도 plugin 깔면 다 가능하다.
+

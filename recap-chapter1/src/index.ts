@@ -1,5 +1,5 @@
-const world = "World"
+const world = 'World';
 
 export default function helloWorld(word: string = world): string {
-    return `Hello ${word}`;
+  return `Hello ${word}`;
 }
