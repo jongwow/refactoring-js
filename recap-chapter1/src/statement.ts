@@ -1,91 +1,27 @@
-import {EnrichPerformance, Invoice, Performance, Play, Plays, StatementData} from "./types";
+import createStatementData from "./createStatementData";
+import { Invoice, Plays, StatementData } from "./types";
 
 export default function statement(invoice: Invoice, plays: Plays) {
-  const statementData:StatementData = {
-    customer: invoice.customer,
-    performances: invoice.performances.map(enrichPerformance),
-    plays: plays,
-    totalAmount: 0,
-    totalVolumeCredits: 0,
-  };
-  statementData.totalAmount = totalAmount(statementData);
-  statementData.totalVolumeCredits = totalVolumeCredits(statementData);
-
-  return renderPlainText(statementData);
-
-  function enrichPerformance(aPerformance: Performance): EnrichPerformance {
-    let assign1:EnrichPerformance = Object.assign(aPerformance, {
-      play: playFor(aPerformance),
-      amount: 0,
-      volumeCredits: 0,
-    });
-    assign1.amount= amountFor(assign1);
-    assign1.volumeCredits= volumeCreditFor(assign1)
-    return assign1;
-  }
-
-  function totalVolumeCredits(data: StatementData): number {
-    return data.performances.reduce((total, perf) => total + perf.volumeCredits, 0);
-  }
-
-  function totalAmount(data: StatementData): number {
-    return data.performances.reduce((total, perf) => total+perf.amount, 0)
-  }
-
-  function volumeCreditFor(aPerformance: EnrichPerformance) {
-      let result = Math.max(aPerformance.audience - 30, 0);
-      if ("comedy" === aPerformance.play.type) {
-          result += Math.floor(aPerformance.audience / 5);
-      }
-      return result;
-  }
-
-  function playFor(aPerformance: Performance): Play {
-    return plays[aPerformance.playID];
-  }
-
-  function amountFor(aPerformance: EnrichPerformance): number {
-    let result = 0;
-    switch (aPerformance.play.type) {
-      case "tragedy":
-        result = 40000;
-        if (aPerformance.audience > 30) {
-          result += 1000 * (aPerformance.audience - 30);
-        }
-        break;
-      case "comedy":
-        result = 30000;
-        if (aPerformance.audience > 20) {
-          result += 10000 + 500 * (aPerformance.audience - 20);
-        }
-        result += 300 * aPerformance.audience;
-        break;
-      default:
-        throw new Error(`known genre: ${aPerformance.play.type}`);
-    }
-    return result;
-  }
+  return renderPlainText(createStatementData(invoice, plays));
 }
 
 function renderPlainText(data: StatementData) {
   let result = `청구 내역 (고객명: ${data.customer})\n`;
 
   for (let perf of data.performances) {
-    result += `${perf.play.name}: ${usd(perf.amount)} (${
-      perf.audience
-    } 석)\n`;
+    result += `${perf.play.name}: ${usd(perf.amount)} (${perf.audience} 석)\n`;
   }
 
   result += `총액 ${usd(data.totalAmount)}\n`;
   result += `적립 포인트: ${data.totalVolumeCredits}점\n`;
   return result;
+}
 
-  function usd(aNumber: number): string {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-    }).format(aNumber / 100);
-  }
 
+function usd(aNumber: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(aNumber / 100);
 }
