@@ -1,4 +1,4 @@
-import {EnrichPerformance, Invoice, Performance, PerformanceWithPlay, Play, Plays, StatementData} from "./types";
+import {EnrichPerformance, Invoice, Performance, Play, Plays, StatementData} from "./types";
 
 export default function statement(invoice: Invoice, plays: Plays) {
   const statementData:StatementData = {
@@ -9,20 +9,20 @@ export default function statement(invoice: Invoice, plays: Plays) {
   return renderPlainText(statementData);
 
   function enrichPerformance(aPerformance: Performance): EnrichPerformance {
-    let assignWithPlay:PerformanceWithPlay = Object.assign({
+    let assign1:EnrichPerformance = Object.assign(aPerformance, {
       play: playFor(aPerformance),
-    }, aPerformance);
-    let assign: EnrichPerformance = Object.assign({
-      amount: amountFor(assignWithPlay)
-    }, assignWithPlay);
-    return assign;
+      amount: 0,
+    });
+    return Object.assign(assign1, {
+        amount: amountFor(assign1),
+    });
   }
 
   function playFor(aPerformance: Performance): Play {
     return plays[aPerformance.playID];
   }
 
-  function amountFor(aPerformance: PerformanceWithPlay): number {
+  function amountFor(aPerformance: EnrichPerformance): number {
     let result = 0;
     switch (aPerformance.play.type) {
       case "tragedy":

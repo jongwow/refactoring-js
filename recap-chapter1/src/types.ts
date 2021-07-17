@@ -23,10 +23,8 @@ export type StatementData = {
     performances: EnrichPerformance[];
     plays: Plays;
 }
-export type PerformanceWithPlay = {
-    play: Play;
-} & Performance;
 
 export type EnrichPerformance = {
+    play: Play;
     amount: number;
-} & PerformanceWithPlay;
+} & Performance;
