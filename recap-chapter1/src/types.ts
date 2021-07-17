@@ -20,6 +20,6 @@ export type Invoice = {
 }
 export type StatementData = {
     customer: string;
-    // performances: Performance[];
+    performances: Performance[];
     // plays: Plays;
 }

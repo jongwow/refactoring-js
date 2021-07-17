@@ -2,15 +2,16 @@ import {Invoice, Plays, Play, Performance, StatementData} from "./types";
 
 export default function statement(invoice: Invoice, plays: Plays) {
   const statementData:StatementData = {
-    customer: invoice.customer
+    customer: invoice.customer,
+    performances: invoice.performances,
   };
-  return renderPlainText(statementData, invoice, plays);
+  return renderPlainText(statementData, plays);
 }
 
-function renderPlainText(data: StatementData, invoice: Invoice, plays: Plays) {
+function renderPlainText(data: StatementData, plays: Plays) {
   let result = `청구 내역 (고객명: ${data.customer})\n`;
 
-  for (let perf of invoice.performances) {
+  for (let perf of data.performances) {
     result += `${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
     } 석)\n`;
@@ -64,7 +65,7 @@ function renderPlainText(data: StatementData, invoice: Invoice, plays: Plays) {
 
   function totalVolumeCredits(): number {
     let volumeCredits = 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       volumeCredits += volumeCreditFor(perf);
     }
     return volumeCredits;
@@ -72,7 +73,7 @@ function renderPlainText(data: StatementData, invoice: Invoice, plays: Plays) {
 
   function totalAmount(): number {
     let result = 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += amountFor(perf);
     }
     return result;
