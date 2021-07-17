@@ -1,4 +1,4 @@
-import {EnrichPerformance, Invoice, Performance, Play, Plays, StatementData} from "./types";
+import {EnrichPerformance, Invoice, Performance, PerformanceWithPlay, Play, Plays, StatementData} from "./types";
 
 export default function statement(invoice: Invoice, plays: Plays) {
   const statementData:StatementData = {
@@ -9,31 +9,20 @@ export default function statement(invoice: Invoice, plays: Plays) {
   return renderPlainText(statementData);
 
   function enrichPerformance(aPerformance: Performance): EnrichPerformance {
-    let assign:EnrichPerformance = Object.assign({
-      play: playFor(aPerformance)
+    let assignWithPlay:PerformanceWithPlay = Object.assign({
+      play: playFor(aPerformance),
     }, aPerformance);
+    let assign: EnrichPerformance = Object.assign({
+      amount: amountFor(assignWithPlay)
+    }, assignWithPlay);
     return assign;
   }
-  
+
   function playFor(aPerformance: Performance): Play {
     return plays[aPerformance.playID];
   }
-}
 
-function renderPlainText(data: StatementData) {
-  let result = `청구 내역 (고객명: ${data.customer})\n`;
-
-  for (let perf of data.performances) {
-    result += `${perf.play.name}: ${usd(amountFor(perf))} (${
-      perf.audience
-    } 석)\n`;
-  }
-
-  result += `총액 ${usd(totalAmount())}\n`;
-  result += `적립 포인트: ${totalVolumeCredits()}점\n`;
-  return result;
-
-  function amountFor(aPerformance: EnrichPerformance): number {
+  function amountFor(aPerformance: PerformanceWithPlay): number {
     let result = 0;
     switch (aPerformance.play.type) {
       case "tragedy":
@@ -54,6 +43,20 @@ function renderPlainText(data: StatementData) {
     }
     return result;
   }
+}
+
+function renderPlainText(data: StatementData) {
+  let result = `청구 내역 (고객명: ${data.customer})\n`;
+
+  for (let perf of data.performances) {
+    result += `${perf.play.name}: ${usd(perf.amount)} (${
+      perf.audience
+    } 석)\n`;
+  }
+
+  result += `총액 ${usd(totalAmount())}\n`;
+  result += `적립 포인트: ${totalVolumeCredits()}점\n`;
+  return result;
 
   function volumeCreditFor(aPerformance: EnrichPerformance) {
     let result = Math.max(aPerformance.audience - 30, 0);
@@ -82,7 +85,7 @@ function renderPlainText(data: StatementData) {
   function totalAmount(): number {
     let result = 0;
     for (let perf of data.performances) {
-      result += amountFor(perf);
+      result += perf.amount;
     }
     return result;
   }

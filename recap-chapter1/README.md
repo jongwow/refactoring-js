@@ -160,3 +160,4 @@ GWT(Given, When, Then) 패턴.
 
 > 책에서 독특했던 내용 중 하나는 performance를 data에 넣을 때 *얕은 복사*를 수행하는 것이다. 이 이유는 **마틴옹**은 함수로 건넨 데이터를 수정하기 싫기 때문이다. 가변(Mutable) 데이터는 금방
 > 상하기 때문에 데이터는 최대한 불변(Immutable)하게 취급한다고 한다.
+- performance 객체를 enrichPerformance(+amount, +play) 로 바꾼다. => amountFor과 playFor을 `renderPlainText()`에서 `statement()` 함수로 옮긴다고 생각하면 된다.
