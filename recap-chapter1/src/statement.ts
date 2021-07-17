@@ -24,21 +24,13 @@ export default function statement(invoice: Invoice, plays: Plays) {
     return assign1;
   }
 
-function totalVolumeCredits(data: StatementData): number {
-    let volumeCredits = 0;
-    for (let perf of data.performances) {
-        volumeCredits += perf.volumeCredits;
-    }
-    return volumeCredits;
-}
+  function totalVolumeCredits(data: StatementData): number {
+    return data.performances.reduce((total, perf) => total + perf.volumeCredits, 0);
+  }
 
-function totalAmount(data: StatementData): number {
-    let result = 0;
-    for (let perf of data.performances) {
-        result += perf.amount;
-    }
-    return result;
-}
+  function totalAmount(data: StatementData): number {
+    return data.performances.reduce((total, perf) => total+perf.amount, 0)
+  }
 
   function volumeCreditFor(aPerformance: EnrichPerformance) {
       let result = Math.max(aPerformance.audience - 30, 0);
