@@ -18,35 +18,37 @@ export default function statement(invoice: Invoice , plays:Plays ){
     result += `적립 포인트: ${volumeCredits}점\n`;
     return result;
 
-    function amountFor(perf: Performance): number{
-      let thisAmount = 0;
-      switch(playFor(perf).type){
+    function amountFor(aPerformance: Performance): number{
+      let result = 0;
+      switch(playFor(aPerformance).type){
         case "tragedy":
-          thisAmount = 40000;
-          if(perf.audience > 30){
-            thisAmount += 1000 * (perf.audience - 30);
+          result = 40000;
+          if(aPerformance.audience > 30){
+            result += 1000 * (aPerformance.audience - 30);
           }
           break;
         case "comedy":
-          thisAmount = 30000;
-          if(perf.audience > 20){
-            thisAmount += 10000 + 500 * (perf.audience - 20);
+          result = 30000;
+          if(aPerformance.audience > 20){
+            result += 10000 + 500 * (aPerformance.audience - 20);
           }
-          thisAmount += 300 * perf.audience;
+          result += 300 * aPerformance.audience;
           break;
         default:
-          throw new Error(`known genre: ${playFor(perf).type}`);
+          throw new Error(`known genre: ${playFor(aPerformance).type}`);
       }
-      return thisAmount;
+      return result;
     }
-    function playFor(perf: Performance): Play{
-      return plays[perf.playID];
+    
+    function playFor(aPerformance: Performance): Play{
+      return plays[aPerformance.playID];
     }
-    function volumeCreditFor(perf: Performance){
-      let volumeCredit = Math.max(perf.audience - 30, 0);
-      if ("comedy" === playFor(perf).type){
-        volumeCredit += Math.floor(perf.audience / 5);
+
+    function volumeCreditFor(aPerformance: Performance){
+      let result = Math.max(aPerformance.audience - 30, 0);
+      if ("comedy" === playFor(aPerformance).type){
+        result += Math.floor(aPerformance.audience / 5);
       }
-      return volumeCredit;
+      return result;
     }
   }
