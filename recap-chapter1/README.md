@@ -151,3 +151,4 @@ GWT(Given, When, Then) 패턴.
 - 읽기 변하게 매개변수명, 내부 변수명 개명
 - format 변수도 질의 함수로 바꿈
 - volumeCredits 에 대해서 **반복문쪼개기** 와 **문장슬라이드**로 volumeCredits **함수추출하기**편하게 바꾼 뒤 추출해내 **임시 변수를 질의 함수로 바꾸기**를 진행한다.
+- totalAmount도 위와 같이 처리한다.
