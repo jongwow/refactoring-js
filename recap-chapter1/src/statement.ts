@@ -1,12 +1,16 @@
-import {Invoice, Plays, Play, Performance, StatementData} from "./types";
+import {Invoice, Performance, Play, Plays, StatementData} from "./types";
 
 export default function statement(invoice: Invoice, plays: Plays) {
   const statementData:StatementData = {
     customer: invoice.customer,
-    performances: invoice.performances,
+    performances: invoice.performances.map(enrichPerformance),
     plays: plays,
   };
   return renderPlainText(statementData);
+
+  function enrichPerformance(aPerformance: Performance) {
+    return Object.assign({}, aPerformance);
+  }
 }
 
 function renderPlainText(data: StatementData) {
