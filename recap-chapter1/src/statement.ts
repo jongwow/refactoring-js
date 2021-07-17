@@ -17,7 +17,6 @@ function renderPlainText(data: StatementData) {
   return result;
 }
 
-
 function usd(aNumber: number): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
