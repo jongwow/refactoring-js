@@ -23,8 +23,9 @@ export default function createStatementData(
   return statementData;
 
   function enrichPerformance(aPerformance: Performance): EnrichPerformance {
+    const calculator = new PerformanceCalculator(aPerformance, playFor(aPerformance));
     let assign1: EnrichPerformance = Object.assign(aPerformance, {
-      play: playFor(aPerformance),
+      play: calculator.play,
       amount: 0,
       volumeCredits: 0,
     });
@@ -77,4 +78,13 @@ export default function createStatementData(
     }
     return result;
   }
+}
+
+class PerformanceCalculator{
+    performance: Performance;
+    play: Play;
+    constructor(performance: Performance, play: Play){
+        this.performance = performance;
+        this.play = play;
+    }
 }
