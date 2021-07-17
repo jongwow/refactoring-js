@@ -21,5 +21,5 @@ export type Invoice = {
 export type StatementData = {
     customer: string;
     performances: Performance[];
-    // plays: Plays;
+    plays: Plays;
 }

@@ -4,11 +4,12 @@ export default function statement(invoice: Invoice, plays: Plays) {
   const statementData:StatementData = {
     customer: invoice.customer,
     performances: invoice.performances,
+    plays: plays,
   };
-  return renderPlainText(statementData, plays);
+  return renderPlainText(statementData);
 }
 
-function renderPlainText(data: StatementData, plays: Plays) {
+function renderPlainText(data: StatementData) {
   let result = `청구 내역 (고객명: ${data.customer})\n`;
 
   for (let perf of data.performances) {
@@ -44,7 +45,7 @@ function renderPlainText(data: StatementData, plays: Plays) {
   }
 
   function playFor(aPerformance: Performance): Play {
-    return plays[aPerformance.playID];
+    return data.plays[aPerformance.playID];
   }
 
   function volumeCreditFor(aPerformance: Performance) {
