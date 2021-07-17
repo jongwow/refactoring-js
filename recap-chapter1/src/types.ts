@@ -27,4 +27,5 @@ export type StatementData = {
 export type EnrichPerformance = {
     play: Play;
     amount: number;
+    volumeCredits: number;
 } & Performance;

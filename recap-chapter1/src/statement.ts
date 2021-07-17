@@ -12,10 +12,20 @@ export default function statement(invoice: Invoice, plays: Plays) {
     let assign1:EnrichPerformance = Object.assign(aPerformance, {
       play: playFor(aPerformance),
       amount: 0,
+      volumeCredits: 0,
     });
     return Object.assign(assign1, {
         amount: amountFor(assign1),
+        volumeCredits: volumeCreditFor(assign1)
     });
+  }
+
+  function volumeCreditFor(aPerformance: EnrichPerformance) {
+      let result = Math.max(aPerformance.audience - 30, 0);
+      if ("comedy" === aPerformance.play.type) {
+          result += Math.floor(aPerformance.audience / 5);
+      }
+      return result;
   }
 
   function playFor(aPerformance: Performance): Play {
@@ -58,14 +68,6 @@ function renderPlainText(data: StatementData) {
   result += `적립 포인트: ${totalVolumeCredits()}점\n`;
   return result;
 
-  function volumeCreditFor(aPerformance: EnrichPerformance) {
-    let result = Math.max(aPerformance.audience - 30, 0);
-    if ("comedy" === aPerformance.play.type) {
-      result += Math.floor(aPerformance.audience / 5);
-    }
-    return result;
-  }
-
   function usd(aNumber: number): string {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -77,7 +79,7 @@ function renderPlainText(data: StatementData) {
   function totalVolumeCredits(): number {
     let volumeCredits = 0;
     for (let perf of data.performances) {
-      volumeCredits += volumeCreditFor(perf);
+      volumeCredits += perf.volumeCredits;
     }
     return volumeCredits;
   }
