@@ -7,14 +7,19 @@ export type Play = {
 };
 
 export type Plays = {
-    [playID in PlayID] : Play
+    [playID in PlayID]: Play
 };
 
 export type Performance = {
     playID: PlayID;
-    audience: number; 
+    audience: number;
 }
 export type Invoice = {
     customer: string;
     performances: Performance[];
+}
+export type StatementData = {
+    customer: string;
+    // performances: Performance[];
+    // plays: Plays;
 }

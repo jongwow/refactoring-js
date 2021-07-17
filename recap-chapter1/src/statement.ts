@@ -1,11 +1,14 @@
-import { Invoice, Plays, Play, Performance } from "./types";
+import {Invoice, Plays, Play, Performance, StatementData} from "./types";
 
 export default function statement(invoice: Invoice, plays: Plays) {
-  return renderPlainText(invoice, plays);
+  const statementData:StatementData = {
+    customer: invoice.customer
+  };
+  return renderPlainText(statementData, invoice, plays);
 }
 
-function renderPlainText(invoice: Invoice, plays: Plays) {
-  let result = `청구 내역 (고객명: ${invoice.customer})\n`;
+function renderPlainText(data: StatementData, invoice: Invoice, plays: Plays) {
+  let result = `청구 내역 (고객명: ${data.customer})\n`;
 
   for (let perf of invoice.performances) {
     result += `${playFor(perf).name}: ${usd(amountFor(perf))} (${
