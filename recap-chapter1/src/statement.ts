@@ -1,4 +1,4 @@
-import { Invoice, Plays } from "./types";
+import { Invoice, Plays, Play, Performance } from "./types";
 
 export default function statement(invoice: Invoice , plays:Plays ){
     let totalAmount = 0;
@@ -9,9 +9,25 @@ export default function statement(invoice: Invoice , plays:Plays ){
     }).format;
   
     for (let perf of invoice.performances){
-      const play = plays[perf.playID];
+      // 포인트를 적립한다.
+      volumeCredits += Math.max(perf.audience - 30, 0);
+  
+      // 희극 관객 5명마다 추가 포인트를 제공한다.
+      if ("comedy" === playFor(perf).type){
+        volumeCredits += Math.floor(perf.audience / 5);
+      }
+      
+      // 청구 내역을 출력한다.
+      result += `${playFor(perf).name}: ${format(amountFor(perf)/100)} (${perf.audience} 석)\n`;
+      totalAmount += amountFor(perf);
+    }
+    result += `총액 ${format(totalAmount / 100)}\n`;
+    result += `적립 포인트: ${volumeCredits}점\n`;
+    return result;
+
+    function amountFor(perf: Performance): number{
       let thisAmount = 0;
-      switch(play.type){
+      switch(playFor(perf).type){
         case "tragedy":
           thisAmount = 40000;
           if(perf.audience > 30){
@@ -26,22 +42,11 @@ export default function statement(invoice: Invoice , plays:Plays ){
           thisAmount += 300 * perf.audience;
           break;
         default:
-          throw new Error(`known genre: ${play.type}`);
+          throw new Error(`known genre: ${playFor(perf).type}`);
       }
-  
-      // 포인트를 적립한다.
-      volumeCredits += Math.max(perf.audience - 30, 0);
-  
-      // 희극 관객 5명마다 추가 포인트를 제공한다.
-      if ("comedy" === play.type){
-        volumeCredits += Math.floor(perf.audience / 5);
-      }
-      
-      // 청구 내역을 출력한다.
-      result += `${play.name}: ${format(thisAmount/100)} (${perf.audience} 석)\n`;
-      totalAmount += thisAmount;
+      return thisAmount;
     }
-    result += `총액 ${format(totalAmount / 100)}\n`;
-    result += `적립 포인트: ${volumeCredits}점\n`;
-    return result;
+    function playFor(perf: Performance): Play{
+      return plays[perf.playID];
+    }
   }

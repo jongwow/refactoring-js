@@ -141,7 +141,10 @@ GWT(Given, When, Then) 패턴.
 [차이](https://softwareengineering.stackexchange.com/questions/308160/differences-between-given-when-then-gwt-and-arrange-act-assert-aaa)
 여기선 AAA 패턴 사용할 것!
 
+# 들어가기
 
-# 하면서 배운 점
-
-Duplicate identifier 'Performance'.ts(2300)
+## 1.4 statement() 쪼개기
+- **함수추출하기** statement 쪼개기 switch 문을 쪼갠다. => amountFor이란 함수로 추출해낸다.
+- 함수추출할 땐 **임시 변수를 질의 함수로 바꾸기**를 주의하자. 필요없는 변수는 **인라인하기**로 감출 수 있다. => play 변수 없애고, thisAmount 변수도 없애자.
+  - 지금은 성능은 우선 걱정하지말자. 깔끔한 코드가 성능 개선도 가능한 코드다!
+  
