@@ -22,6 +22,8 @@ export type StatementData = {
     customer: string;
     performances: EnrichPerformance[];
     plays: Plays;
+    totalAmount: number,
+    totalVolumeCredits: number,
 }
 
 export type EnrichPerformance = {
