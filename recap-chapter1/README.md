@@ -140,3 +140,8 @@ AAA(Arrange, Act, Assert) 패턴.
 GWT(Given, When, Then) 패턴.
 [차이](https://softwareengineering.stackexchange.com/questions/308160/differences-between-given-when-then-gwt-and-arrange-act-assert-aaa)
 여기선 AAA 패턴 사용할 것!
+
+
+# 하면서 배운 점
+
+Duplicate identifier 'Performance'.ts(2300)
