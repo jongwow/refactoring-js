@@ -1,3 +1,4 @@
+const {expect} = require('./static/chai');
 class Producer {
   constructor(aProvince, data) {
     this._province = aProvince;
@@ -82,7 +83,7 @@ class Province {
   }
 
   get shortfall(){
-    return this._demand - this.totalProduction
+    return this._demand - this.totalProduction;
   }
 
   get profit(){
@@ -121,11 +122,9 @@ function sampleProvinceData() {
   };
 }
 
-const assert = require('assert');
-
 describe('province', function (){
   it('shortfall', function(){
     const asia = new Province(sampleProvinceData());
-    assert.equal(asia.shortfall, 5);
+    expect(asia.shortfall).equal(5);
   })
 })
