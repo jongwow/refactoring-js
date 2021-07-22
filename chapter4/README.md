@@ -54,3 +54,12 @@ it('profit', function () {
   expect(asia.profit).equal(230);
 })
 ```
+
+## 4.5 픽스처 수정하기
+
+- beforeEach에서 '설정'한 표준 픽스처를 취해, 테스트를 '수행' 후 잘 처리했는지 검증'
+    - 설정-실행-검증(setup-exercise-verify)
+    - 조건-발생-결과(given-when-then)
+    - 준비-수행-단언(arrange-act-assert)
+- 해체(teardown)혹은 청소(cleanup)이라는 단계(픽스처를 제거해 테스트간 영향도 제거)도 있지만 명시적 언급 잘 안함. 왜냐면 beforeEach에서 자동으로 재설정되기 때문. 
+  물론 필요한 경우(픽스처 생성이 무거운 연산일 경우)도 있긴 함.
