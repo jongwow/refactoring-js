@@ -2,7 +2,7 @@
 
 리팩터링을 제대로 하려면 견고한 테스트 스위트(test suite)가 뒷받침돼야 한다.
 
-## 4.1 자게 테스트 코드의 가치
+## 4.1 자기 테스트 코드의 가치
 
 프로그래머들이 실제로 코드를 작성하는 시간의 비중은 그리 크지 않다. 대부분의 시간을 디버깅에 쓴다. 진짜 끔찍한 건 버그를 찾는 여정이다. 테스트가 성공했는지 확인하는 작업을 내가 하는 것이 아니라 컴퓨터가
 알려준다면? 자가 테스트 소프트웨어가 그렇게 탄생했다.
@@ -27,3 +27,30 @@
 - 테스트는 위험 요인을 중심으로 작성하기! 현재, 향후 발생할 버그를 찾는것이 목적
 
 **완벽하게 만드느라 테스트를 수행하지 못하느니, 불완전한 테스트라도 작성해 실행하는 게 낫다.**
+
+```javascript
+  const asia = new Province(sampleProvinceData());
+it('shortfall', function () {
+  expect(asia.shortfall).equal(5);
+})
+it('profit', function () {
+  expect(asia.profit).equal(230);
+})
+```
+
+위와 같이 작성하면 안됨. **테스트끼리 상호작용하게 하는 공유 픽스처**를 생성함. 한 테스트에서 province를 수정하면 다른 값이 오염되어 다른 테스트가 실패할 수 있음.
+
+차라리 아래와 같이 하는 것이 낫다.
+
+```javascript
+let asia;
+beforeEach(function () {
+  asia = new Province(sampleProvinceData());
+})
+it('shortfall', function () {
+  expect(asia.shortfall).equal(5);
+})
+it('profit', function () {
+  expect(asia.profit).equal(230);
+})
+```
