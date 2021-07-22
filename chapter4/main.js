@@ -82,7 +82,7 @@ class Province {
   }
 
   get shortfall(){
-    return this._demand - this.totalProduction;
+    return this._demand - this.totalProduction
   }
 
   get profit(){
@@ -120,3 +120,12 @@ function sampleProvinceData() {
     price: 20,
   };
 }
+
+const assert = require('assert');
+
+describe('province', function (){
+  it('shortfall', function(){
+    const asia = new Province(sampleProvinceData());
+    assert.equal(asia.shortfall, 5);
+  })
+})
