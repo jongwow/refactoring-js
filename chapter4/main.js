@@ -1,4 +1,5 @@
 const {expect} = require('./static/chai');
+
 class Producer {
   constructor(aProvince, data) {
     this._province = aProvince;
@@ -82,19 +83,22 @@ class Province {
     this._price = parseInt(arg);
   }
 
-  get shortfall(){
+  get shortfall() {
     return this._demand - this.totalProduction;
   }
 
-  get profit(){
-    return this.demandValue - this.totalProduction;
+  get profit() {
+    return this.demandValue - this.demandCost;
   }
-  get demandValue(){
-    return this.satisfiedDemand - this.demandCost;
+
+  get demandValue() {
+    return this.satisfiedDemand * this.price;
   }
-  get satisfiedDemand(){
+
+  get satisfiedDemand() {
     return Math.min(this._demand, this.totalProduction);
   }
+
   get demandCost() {
     let remainingDemand = this.demand;
     let result = 0;
@@ -122,9 +126,13 @@ function sampleProvinceData() {
   };
 }
 
-describe('province', function (){
-  it('shortfall', function(){
+describe('province', function () {
+  it('shortfall', function () {
     const asia = new Province(sampleProvinceData());
     expect(asia.shortfall).equal(5);
+  })
+  it('profit', function () {
+    const asia = new Province(sampleProvinceData());
+    expect(asia.profit).equal(230);
   })
 })
